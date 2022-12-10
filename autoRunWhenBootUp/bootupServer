@@ -14,7 +14,7 @@
 case "$1" in
     start)
         echo "Start run my bootup script"
-        cd /home/pi
+        cd /usr/bin
         sh  bootup.sh
         ;;
     stop)
