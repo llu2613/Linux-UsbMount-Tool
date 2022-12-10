@@ -52,6 +52,8 @@ VPATH			 := $(SRCDIRS)
 
 .PHONY: clean
 
+#create out directory
+$(shell if [ ! -e $(OUTPUTDIR) ];then mkdir -p $(OUTPUTDIR); fi)
 
 #$(info "SFILES = $(SFILES) ")
 #$(info "CFILES = $(CFILES) ")
