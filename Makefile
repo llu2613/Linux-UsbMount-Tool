@@ -58,8 +58,8 @@ $(shell if [ ! -e $(OUTPUTDIR) ];then mkdir -p $(OUTPUTDIR); fi)
 #$(info "SFILES = $(SFILES) ")
 #$(info "CFILES = $(CFILES) ")
 
-$(OUTPUTDIR)/$(TARGET).elf:$(OBJS)
-	$(CXX) -o $(OUTPUTDIR)/$(TARGET).elf $^ $(LDFLAGS) $(LFLAGS)
+$(OUTPUTDIR)/$(TARGET):$(OBJS)
+	$(CXX) -o $(OUTPUTDIR)/$(TARGET) $^ $(LDFLAGS) $(LFLAGS)
 #$(OBJCOPY) -O binary -S $(OUTPUTDIR)/$(TARGET).elf $(OUTPUTDIR)/$(TARGET).bin
 #$(OBJDUMP) -D -m arm $(OUTPUTDIR)/$(TARGET).elf > $(OUTPUTDIR)/$(TARGET).dis
 	$(SIZEINFO) $@
@@ -72,3 +72,6 @@ $(CXXOBJS) : $(OUTPUTDIR)/%.o : %.cpp
 
 clean:
 	rm -rf $(OUTPUTDIR)/*
+
+install:
+	$(shell /bin/bash ./autoRunWhenBootUp/install.sh)
