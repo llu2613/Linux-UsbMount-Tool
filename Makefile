@@ -75,3 +75,6 @@ clean:
 
 install:
 	$(shell /bin/bash ./autoRunWhenBootUp/install.sh)
+
+uninstall:
+	$(shell /bin/bash ./autoRunWhenBootUp/uninstall.sh)
