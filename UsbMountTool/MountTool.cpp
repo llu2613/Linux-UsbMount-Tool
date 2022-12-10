@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/mount.h>
+#include <dirent.h>
 
 using namespace std;
 
@@ -24,20 +25,32 @@ MountTool::~MountTool()
         }
     }
 }
-bool MountTool::isUsbDevice(const std::string& deviceFile)
+bool MountTool::isUsbDevice(const std::string& deviceFile, int32_t statu)
 {
     if(deviceFile.find("part") == deviceFile.npos)
     {
         return false;
     }
+    if(statu == STATU_INSERT)
+    {
+        string devpath(32, '\0');
+        string devlink("/dev/disk/by-id/");
+        devlink.append(deviceFile);
+        int ret = readlink(devlink.c_str(), &*devpath.begin(), devpath.size());
+        if(ret < 0)
+        {
+            cout << "Error: get device faile 222" << strerror(errno) << endl;
+            return false;
+        }
+        if(devpath.find("sd") == string::npos)
+        {
+            return false;
+        }
+    }
     return true;
 }
 bool MountTool::getDeviceInfo(const std::string& deviceFile, int32_t statu, usbDevice& dev)
 {
-    if(!isUsbDevice(deviceFile))
-    {
-        return false;
-    }
     uint32_t pos1 = 0;
     uint32_t pos2 = 0;
     char buff[64] = {0};
@@ -68,7 +81,7 @@ bool MountTool::getDeviceInfo(const std::string& deviceFile, int32_t statu, usbD
         int ret = readlink(devlink.c_str(), buff, sizeof(buff));
         if(ret < 0)
         {
-            cout << "Error: get device faile " << strerror(errno) << endl;
+            cout << "Error: get device faile 111 " << strerror(errno) << endl;
             return false;
         }
         pos1 = string(buff).find_last_of('/');
@@ -89,7 +102,7 @@ bool MountTool::getDeviceInfo(const std::string& deviceFile, int32_t statu, usbD
 bool MountTool::doMountOrUnmount(const std::string& deviceFile, int32_t statu)
 {
     usbDevice dev;
-    if(!isUsbDevice(deviceFile))
+    if(!isUsbDevice(deviceFile, statu))
     {
         return false;
     }
@@ -103,7 +116,6 @@ bool MountTool::doMountOrUnmount(const std::string& deviceFile, int32_t statu)
     {        
         if(!isMounted(dev))
         {
-            cout << dev.getStorageName() << " has not mounted" << endl;
             if(mount(dev))
             {
                 addDevice(dev);
@@ -238,9 +250,29 @@ bool MountTool::umount(const usbDevice&  dev)
     }
     if(!deleteDir(dev.getMountPath().c_str()))
     {
-        cout<<"Error deleteDir " << dev.getMountPath() << " fail : " << strerror(errno) << endl;
         return false;
     }
+    return true;
+}
+bool MountTool::checkAndMountInsertUsbDev()
+{
+    DIR *dir = nullptr;
+    struct dirent *file = nullptr;
+    dir = opendir("/dev/disk/by-id");
+    if(dir == nullptr)
+    {
+        cout<<"Error opendir " << "/dev/disk/by-id" << " fail : " << strerror(errno) << endl;
+        return false;
+    }
+    while((file = readdir(dir)) != nullptr)
+    {
+        if(isUsbDevice(file->d_name,STATU_INSERT))
+        {
+            doMountOrUnmount(file->d_name, STATU_INSERT);
+        }
+    }
+    closedir(dir);
+    dir = nullptr;
     return true;
 }
 void MountTool::getMountedUsbInfo() const

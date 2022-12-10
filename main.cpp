@@ -21,7 +21,7 @@ int main(int argc, char**argv)
     FD_ZERO(&readset);
 
     MountTool mount;
-    
+    mount.checkAndMountInsertUsbDev();
 
     Notify mnotify;
     mnotify.setEventCallBack([&](const inotify_event& e){

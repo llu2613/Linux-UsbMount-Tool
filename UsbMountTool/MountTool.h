@@ -136,11 +136,12 @@ public:
     bool doMountOrUnmount(const std::string& deviceFile, int32_t statu);
     uint32_t getMountedUsbCount() const {return deviceList.size();}
     void getMountedUsbInfo() const;
+    bool checkAndMountInsertUsbDev();
 private:
     bool getDeviceInfo(const std::string& deviceFile, int32_t statu, usbDevice& dev);
     bool addDevice(const usbDevice& dev);
     bool removeDevice(const usbDevice& dev);
-    bool isUsbDevice(const std::string& deviceFile);
+    bool isUsbDevice(const std::string& deviceFile,  int32_t statu);
     bool isDeviceAlreadyAdded(const usbDevice&  dev);
     bool isMounted(const usbDevice& dev);
     bool isDirectoryExits(const std::string& directory);
