@@ -6,8 +6,6 @@
 #include <string>
 #include <list>
 
-#define FILE_MOUNT_CHECK "/proc/mounts"
-
 class usbDevice
 {
 public:

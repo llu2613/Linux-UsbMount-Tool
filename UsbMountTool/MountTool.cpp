@@ -173,10 +173,10 @@ bool MountTool::isMounted(const usbDevice&  dev)
     int32_t fd = -1;
     int32_t len = 0;
     bool mounted = false;
-    fd = open(FILE_MOUNT_CHECK, O_RDONLY);
+    fd = open("/proc/mounts", O_RDONLY);
     if(fd < 0)
     {
-        cout << "Error: open " << FILE_MOUNT_CHECK << " Fail :" << strerror(errno) << endl;
+        cout << "Error: open " << "/proc/mounts" << " Fail :" << strerror(errno) << endl;
         return false;
     }
     while((len = read(fd, &*readBuff.begin(), readBuff.size())) > 0)
