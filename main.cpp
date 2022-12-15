@@ -27,6 +27,15 @@ int main(int argc, char**argv)
     FD_ZERO(&readset);
 
     MountTool mount;
+    mount.setMountResultNtfyCb([](const usbDevice& dev, int32_t status){
+        if(status == MountTool::STATU_INSERT)
+        {
+            cout << "USB Name: " << dev.getStorageName() << endl;
+            cout << "USB DevPath: " << dev.getDeviceName() << endl;
+            cout << "USB MountPath: " << dev.getMountPath() << endl;
+            cout << "USB FileSystemType: " << dev.getFileSysType() << endl;
+        }
+    });
     mount.checkAndMountInsertUsbDev();
 
     Notify mnotify;
@@ -36,7 +45,7 @@ int main(int argc, char**argv)
             usbDevice test;
             if(mount.doMountOrUnmount(e.name, MountTool::STATU_INSERT))
             {
-                mount.getMountedUsbInfo();
+                //mount.getMountedUsbInfo();
             }
         }
         if(e.mask & Notify::NOTIFY_EVENT_IN_DELETE)
@@ -44,7 +53,7 @@ int main(int argc, char**argv)
             usbDevice test;
             if(mount.doMountOrUnmount(e.name, MountTool::STATU_DELETE))
             {
-                mount.getMountedUsbInfo();
+                //mount.getMountedUsbInfo();
             }
         }
     });

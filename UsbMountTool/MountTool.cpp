@@ -118,6 +118,7 @@ bool MountTool::doMountOrUnmount(const std::string& deviceFile, int32_t statu)
         {
             if(mount(dev))
             {
+                doMountEventNotify(dev, statu);
                 addDevice(dev);
             }
         }
@@ -128,6 +129,7 @@ bool MountTool::doMountOrUnmount(const std::string& deviceFile, int32_t statu)
         {
             if(umount(dev))
             {
+                doMountEventNotify(dev, statu);
                 removeDevice(dev);
             }
         }

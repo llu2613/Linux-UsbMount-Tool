@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string>
 #include <list>
+#include <functional>
 
 class usbDevice
 {
@@ -123,6 +124,7 @@ private:
 
 class MountTool
 {
+    using MountResultCb = std::function<void(const usbDevice&, const int32_t)> ;
 public:
     MountTool();
     ~MountTool();
@@ -135,6 +137,10 @@ public:
     uint32_t getMountedUsbCount() const {return deviceList.size();}
     void getMountedUsbInfo() const;
     bool checkAndMountInsertUsbDev();
+    void setMountResultNtfyCb(MountResultCb&& cb)
+    {
+        resultCb = std::move(cb);
+    }
 private:
     bool getDeviceInfo(const std::string& deviceFile, int32_t statu, usbDevice& dev);
     bool addDevice(const usbDevice& dev);
@@ -147,9 +153,16 @@ private:
     bool deleteDir(const std::string& directory);
     bool mount(const usbDevice&  dev);
     bool umount(const usbDevice&  dev);
+    void doMountEventNotify(const usbDevice& dev, const int32_t event)
+    {
+        if(resultCb)
+        {
+            resultCb(dev, event);
+        }
+    }
 private:
-std::list<usbDevice*> deviceList;
-
+    std::list<usbDevice*> deviceList;
+    MountResultCb resultCb;
 public:
     static const int32_t STATU_INSERT = 0;
     static const int32_t STATU_DELETE = 1;
