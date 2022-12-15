@@ -22,12 +22,6 @@ int main(int argc, char**argv)
     uint32_t count = thread::hardware_concurrency();
     cout << count << endl;
     ThreadPool thpool(1);
-    /*while(true)
-    {
-        thpool.addTask([](){cout << "hellow" << endl;});
-    }
-*/
-
 
     fd_set readset;
     FD_ZERO(&readset);

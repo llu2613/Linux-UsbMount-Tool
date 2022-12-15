@@ -145,12 +145,13 @@ bool MountTool::addDevice(const usbDevice& dev)
 }
 bool MountTool::removeDevice(const usbDevice& dev)
 {
-    for(auto& dv : deviceList)
+    for(auto it = deviceList.begin(); it != deviceList.end(); it++)
     {
-        if(*dv == dev)
+        if(*(*it) == dev)
         {
-            deviceList.remove(dv);
-            delete dv;
+            auto& temp = it;
+            deviceList.erase(it);
+            delete *temp;
             return true;
         }
     }
