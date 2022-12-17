@@ -35,7 +35,7 @@ int main(int argc, char**argv)
             cout << "USB MountPath: " << dev.getMountPath() << endl;
             cout << "USB FileSystemType: " << dev.getFileSysType() << endl;
             IniParse parse(dev.getMountPath());
-            const vector<string> cmd = parse.getCommand();
+            const vector<string>& cmd = parse.getCommand();
             for(auto& it : cmd)
             {
                 cout << it << endl;
