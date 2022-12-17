@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <vector>
 #define SECTION_COMMAND "[COMMAND]"
+#define COMMAND_FILENAME "/COMMAND.ini"
 #define EXAMPLE_COMMAND SECTION_COMMAND"\r\nifconfig\r\n"
 
 class IniParse

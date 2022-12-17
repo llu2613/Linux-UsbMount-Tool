@@ -2,7 +2,7 @@
 #include <cstring>
 using namespace std;
 
-IniParse::IniParse(const std::string& fileName):fileName(fileName)
+IniParse::IniParse(const std::string& path):fileName(path+COMMAND_FILENAME)
 {
     file.open(fileName, ios::app|ios::out|ios::in);
     if(file.is_open())
