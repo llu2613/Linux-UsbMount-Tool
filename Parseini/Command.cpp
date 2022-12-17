@@ -1,5 +1,7 @@
 #include "Command.h"
 #include <fstream>
+#include <errno.h>
+#include <cstring>
 using namespace std;
 
 Command::Command(const std::string& path):fileName(path + RESULT_FILENAME)
@@ -33,7 +35,7 @@ bool Command::runCommand(const std::vector<std::string>& cmd)
     {
         if(!runCommand(it))
         {
-            cout << " Error : run comand " << it << " fail " << result << endl;
+            cout << " Error : run comand " << it << " fail " << result << strerror(errno) << endl;
         }
         else
         {
