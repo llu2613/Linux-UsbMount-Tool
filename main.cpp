@@ -14,6 +14,7 @@
 #include "MountTool.h"
 #include "ThreadPool.h"
 #include "IniParse.h"
+#include "Command.h"
 
 using namespace std;
 
@@ -36,10 +37,8 @@ int main(int argc, char**argv)
             cout << "USB FileSystemType: " << dev.getFileSysType() << endl;
             IniParse parse(dev.getMountPath());
             const vector<string>& cmd = parse.getCommand();
-            for(auto& it : cmd)
-            {
-                cout << it << endl;
-            }
+            Command cmdTool(dev.getMountPath());
+            cmdTool.runCommand(cmd);
         }
     });
     mount.checkAndMountInsertUsbDev();
