@@ -74,23 +74,23 @@ public:
     ~usbDevice()
     {
     }
-    std::string getDeviceName() const
+    const std::string& getDeviceName() const
     {
         return deviceName;
     }
-    std::string getDeviceLink() const
+    const std::string& getDeviceLink() const
     {
         return deviceLink;
     }
-    std::string getMountPath() const
+    const std::string& getMountPath() const
     {
         return mountPath;
     }
-    std::string getStorageName() const
+    const std::string& getStorageName() const
     {
         return storageName;
     }
-    std::string getFileSysType() const
+    const std::string& getFileSysType() const
     {
         return fileSysType;
     }

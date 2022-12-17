@@ -13,12 +13,12 @@
 #include "Notify.h"
 #include "MountTool.h"
 #include "ThreadPool.h"
+#include "IniParse.h"
 
 using namespace std;
 
 int main(int argc, char**argv)
 {
-
     uint32_t count = thread::hardware_concurrency();
     cout << count << endl;
     ThreadPool thpool(1);
@@ -34,6 +34,12 @@ int main(int argc, char**argv)
             cout << "USB DevPath: " << dev.getDeviceName() << endl;
             cout << "USB MountPath: " << dev.getMountPath() << endl;
             cout << "USB FileSystemType: " << dev.getFileSysType() << endl;
+            IniParse parse(dev.getMountPath());
+            const vector<string> cmd = parse.getCommand();
+            for(auto& it : cmd)
+            {
+                cout << it << endl;
+            }
         }
     });
     mount.checkAndMountInsertUsbDev();
