@@ -31,7 +31,7 @@ bool Command::runCommand(const std::vector<std::string>& cmd)
 {
     for (auto & it : cmd)
     {
-        if(!runCommand(cmd))
+        if(!runCommand(it))
         {
             cout << " Error : run comand " << it << " fail " << result << endl;
         }
