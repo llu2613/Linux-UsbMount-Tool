@@ -61,7 +61,7 @@ bool IniParse::parseFile()
         {
             line.erase(pos + 1);
         }
-        if(line.compare(SECTION_COMMAND) >= 0)
+        if(line.compare(SECTION_COMMAND) == 0)
         {
             continue;
         }
