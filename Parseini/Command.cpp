@@ -33,7 +33,7 @@ bool Command::runCommand(const std::string& cmd)
 bool Command::runCommand(const std::vector<std::string>& cmd)
 {
     fstream file;
-    file.open(fileName, ios::app|ios::out);
+    file.open(fileName, ios::app|ios::out|ios::ate);
     for (auto & it : cmd)
     {
         if(!runCommand(it))
@@ -42,10 +42,13 @@ bool Command::runCommand(const std::vector<std::string>& cmd)
         }
         else
         {
-            cout << result << endl;
             if(file.is_open())
             {
                 file.write(result.c_str(), result.size());
+            }
+            else
+            {
+                cout << result << endl;
             }
         }
     }
