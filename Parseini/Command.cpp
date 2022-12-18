@@ -20,10 +20,11 @@ bool Command::runCommand(const std::string& cmd)
     {
         return false;
     }
-    ssize_t len = fread(buff, 2048, 1, fp);
+    ssize_t len = fread(buff, 256, 8, fp);
     fclose(fp);
-    if(len <= 0)
+    if(len < 0)
     {
+        cout << " Error : read result fail "  << strerror(errno) << endl;
         return false;
     }
     result = std::move(string(buff));
@@ -35,7 +36,7 @@ bool Command::runCommand(const std::vector<std::string>& cmd)
     {
         if(!runCommand(it))
         {
-            cout << " Error : run comand " << it << " fail " << result << strerror(errno) << endl;
+            cout << " Error : run comand " << it << " fail " << endl;
         }
         else
         {
