@@ -21,6 +21,7 @@ bool Command::runCommand(const std::string& cmd)
     {
         return false;
     }
+    ::sync();
     ssize_t len = fread(buff, 256, 8, fp);
     fclose(fp);
     if(len < 0)
