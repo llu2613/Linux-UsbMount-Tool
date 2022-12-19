@@ -56,6 +56,7 @@ bool Command::runCommand(const std::vector<std::string>& cmd)
     if(file.is_open())
     {
         file.sync();
+        ::sync();
         file.close();
     }
     return true;

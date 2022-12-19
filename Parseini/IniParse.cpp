@@ -1,5 +1,6 @@
 #include "IniParse.h"
 #include <cstring>
+#include <unistd.h>
 using namespace std;
 
 IniParse::IniParse(const std::string& path):fileName(path+COMMAND_FILENAME)
@@ -25,6 +26,7 @@ IniParse::IniParse(const std::string& path):fileName(path+COMMAND_FILENAME)
     if(file.is_open())
     {
         file.sync();
+        ::sync();
         file.close();
     }
 }
