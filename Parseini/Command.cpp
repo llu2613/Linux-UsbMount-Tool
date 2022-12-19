@@ -2,6 +2,7 @@
 #include <fstream>
 #include <errno.h>
 #include <cstring>
+#include <unistd.h>
 using namespace std;
 
 Command::Command(const std::string& path):fileName(path + RESULT_FILENAME)
@@ -33,7 +34,7 @@ bool Command::runCommand(const std::string& cmd)
 bool Command::runCommand(const std::vector<std::string>& cmd)
 {
     fstream file;
-    file.open(fileName, ios::app|ios::out|ios::ate);
+    file.open(fileName, ios::app);
     for (auto & it : cmd)
     {
         if(!runCommand(it))

@@ -4,21 +4,28 @@ using namespace std;
 
 IniParse::IniParse(const std::string& path):fileName(path+COMMAND_FILENAME)
 {
-    file.open(fileName, ios::app|ios::out|ios::in);
-    if(file.is_open())
+    if(fileExits(fileName) && getFileSize(fileName) > 0)
     {
-        if(getFileSize(fileName) > 0)
+        file.open(fileName, ios::in);
         {
-            parseFile();
+            if(file.is_open())
+            {
+                parseFile();
+            }
         }
-        else
+    }
+    else
+    {
+        file.open(fileName, ios::out);
+        if(file.is_open())
         {
             file.write(EXAMPLE_COMMAND,strlen(EXAMPLE_COMMAND));
         }
-        if(file.is_open())
-        {
-            file.close();
-        }
+    }
+    if(file.is_open())
+    {
+        file.sync();
+        file.close();
     }
 }
 
