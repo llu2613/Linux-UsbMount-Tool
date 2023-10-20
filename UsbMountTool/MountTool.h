@@ -152,6 +152,7 @@ private:
     bool createDir(const std::string& directory);
     bool deleteDir(const std::string& directory);
     bool mount(const usbDevice&  dev);
+    bool mount2(const usbDevice&  dev);
     bool umount(const usbDevice&  dev);
     void doMountEventNotify(const usbDevice& dev, const int32_t event)
     {

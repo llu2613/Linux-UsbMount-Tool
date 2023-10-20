@@ -1,5 +1,6 @@
 #include "MountTool.h"
 #include <iostream>
+#include <sstream>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -217,6 +218,8 @@ bool MountTool::deleteDir(const std::string& directory)
 }
 bool MountTool::mount(const usbDevice&  dev)
 {
+    return mount2(dev);
+
     if(dev.getMountPath().size() == 0 || dev.getDeviceName().size() == 0)
     {
         return false;
@@ -231,6 +234,39 @@ bool MountTool::mount(const usbDevice&  dev)
     if (::mount(dev.getDeviceName().c_str(), dev.getMountPath().c_str(), dev.getFileSysType().c_str() ,0xc0ed0000, "codepage=936,iocharset=gb2312") != 0)
     {
         cout<<"Error mount " << dev.getDeviceName() << " to " << dev.getMountPath() << " fail : " << strerror(errno) << endl;
+        deleteDir(dev.getMountPath().c_str());
+        return false;
+    }
+    return true;
+}
+bool MountTool::mount2(const usbDevice&  dev)
+{
+    if(dev.getMountPath().size() == 0 || dev.getDeviceName().size() == 0)
+    {
+        return false;
+    }
+    if(!isDirectoryExits(dev.getMountPath()))
+    {
+        if(!createDir(dev.getMountPath()))
+        {
+            return false;
+        }
+    }
+    // mount /dev/sdc1 /mnt/usbhd1
+    char cmd[255];
+    std::ostringstream stm;
+    sprintf(cmd, "mount %s %s 2>&1",dev.getDeviceName().c_str(),dev.getMountPath().c_str());
+    FILE* fp = popen(cmd, "r");
+    if(fp) {
+        char line[128];
+        while (fgets(line, 128, fp)) {
+            stm << line;
+        }
+        pclose(fp);
+    }
+    if (stm.tellp() > 0)
+    {
+        cout<<"Error mount " << dev.getDeviceName() << " to " << dev.getMountPath() << " fail : " << stm.str()<< endl;
         deleteDir(dev.getMountPath().c_str());
         return false;
     }
